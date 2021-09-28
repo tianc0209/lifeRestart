@@ -17,7 +17,7 @@ class App{
     #hintTimeout;
     #specialthanks;
     #autoTrajectory;
-
+    #age;
     async initial() {
         this.initPages();
         this.switch('loading');
@@ -407,8 +407,9 @@ class App{
             <div class="btn-area">
                 <button id="auto" class="mainbtn">自动播放</button>
                 <button id="auto2x" class="mainbtn">自动播放2x</button>
-                <button id="summary" class="mainbtn">人生总结</button>
+                <button id="auto100" class="mainbtn">自动到100</button>
                 <button id="domToImage" class="mainbtn">人生回放</button>
+                <button id="summary" class="mainbtn">人生总结</button>
             </div>
             <div class="domToImage2wx">
                 <img src="" id="endImage" />
@@ -422,6 +423,7 @@ class App{
                 if(this.#isEnd) return;
                 const trajectory = this.#life.next();
                 const { age, content, isEnd } = trajectory;
+                this.#age = age
                 const li = $(`<li><span>${age}岁：</span><span>${
                     content.map(
                         ({type, description, grade, name, postEvent , eventId}) => {
@@ -442,7 +444,8 @@ class App{
                     trajectoryPage.find('#summary').show();
                     trajectoryPage.find('#auto').hide();
                     trajectoryPage.find('#auto2x').hide();
-                    // trajectoryPage.find('#domToImage').show();
+                    trajectoryPage.find('#auto100').hide();
+                    trajectoryPage.find('#domToImage').show();
                 }
                 const property = this.#life.getLastRecord();
                 $("#lifeProperty").html(`
@@ -488,15 +491,20 @@ class App{
                 clearInterval(this.#autoTrajectory);
                 this.#autoTrajectory = null;
             } else {
-                if(!this.isEnd)
+                if(!this.#isEnd){
                     trajectoryPage
                         .find('#lifeTrajectory')
                         .click();
+                }
                 this.#autoTrajectory = setInterval(()=>{
-                    if(this.isEnd) {
+                    if(this.#isEnd) {
                         clearInterval(this.#autoTrajectory);
                         this.#autoTrajectory = null;
-                    } else {
+                    }else if(this.#age==100){
+                        clearInterval(this.#autoTrajectory);
+                        trajectoryPage.find('#auto100').hide();
+                        this.#autoTrajectory = null;
+                    }else {
                         trajectoryPage
                             .find('#lifeTrajectory')
                             .click();
@@ -511,6 +519,9 @@ class App{
         trajectoryPage
             .find('#auto2x')
             .click(()=>auto(500));
+        trajectoryPage
+            .find('#auto100')
+            .click(()=>auto(10));
 
         // Summary
         const summaryPage = $(`
@@ -698,6 +709,7 @@ class App{
                     trajectoryPage.find('#summary').hide();
                     trajectoryPage.find('#auto').show();
                     trajectoryPage.find('#auto2x').show();
+                    trajectoryPage.find('#auto100').show();
                     this.#isEnd = false;
                 },
                 born: contents => {
