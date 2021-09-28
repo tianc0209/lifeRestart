@@ -92,14 +92,14 @@ class Talent {
             if(!talentList[grade]) talentList[grade] = [{ grade, name, description, id }];
             else talentList[grade].push({ grade, name, description, id });
         }
-
+        return talentList[3].concat(include).concat(talentList[2]).concat(talentList[1]).concat(talentList[0])
         return new Array(10)
             .fill(1).map((v, i)=>{
                 if(!i && include) return include;
                 let grade = randomGrade();
                 while(talentList[grade].length == 0) grade--;
+                
                 const length = talentList[grade].length;
-
                 const random = Math.floor(Math.random()*length) % length;
                 return talentList[grade].splice(random,1)[0];
             });
