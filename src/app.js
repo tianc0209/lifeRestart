@@ -407,9 +407,11 @@ class App{
             <div class="btn-area">
                 <button id="auto" class="mainbtn">自动播放</button>
                 <button id="auto2x" class="mainbtn">自动播放2x</button>
-                <button id="auto100" class="mainbtn">自动到100</button>
                 <button id="domToImage" class="mainbtn">人生回放</button>
                 <button id="summary" class="mainbtn">人生总结</button>
+            </div>
+            <div class="btn-area">
+                <button id="auto100" class="mainbtn">自动到100</button>
             </div>
             <div class="domToImage2wx">
                 <img src="" id="endImage" />
